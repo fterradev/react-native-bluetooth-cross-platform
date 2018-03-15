@@ -1,4 +1,5 @@
 package com.rctunderdark;
+import android.bluetooth.BluetoothAdapter;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -51,7 +52,8 @@ public class NetworkManager extends ReactContextBaseJavaModule implements ReactN
     public void stopAdvertising() {
         if(this.type == User.PeerType.ADVERTISER_BROWSER) {
             this.type = User.PeerType.BROWSER;
-            this.networkCommunicator.initTransport("WIFI-BT", this.type);
+			String kind = (BluetoothAdapter.getDefaultAdapter() != null) ? "WIFI-BT" : "WIFI";
+            this.networkCommunicator.initTransport(kind, this.type);
             return;
         }
         this.type = User.PeerType.OFFLINE;
@@ -61,7 +63,8 @@ public class NetworkManager extends ReactContextBaseJavaModule implements ReactN
     public void stopBrowsing() {
         if(this.type == User.PeerType.ADVERTISER_BROWSER) {
             this.type = User.PeerType.ADVERISER;
-            this.networkCommunicator.initTransport("WIFI-BT", this.type);
+            String kind = (BluetoothAdapter.getDefaultAdapter() != null) ? "WIFI-BT" : "WIFI";
+            this.networkCommunicator.initTransport(kind, this.type);
             return;
         }
         this.type = User.PeerType.OFFLINE;
